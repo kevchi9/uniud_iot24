@@ -8,7 +8,7 @@ import signal
 import sys
 
 DEVICE_NAME="Kendau GPS"
-SERIAL_PORT="/dev/pts/6"
+SERIAL_PORT="/dev/pts/3"
 BAUDRATE=9600
 shutdown = False
 
