@@ -5,6 +5,7 @@
 '''
 import os
 import threading
+import queue
 import time
 import serial
 import signal
@@ -17,6 +18,8 @@ BAUDRATE = 9600
 FINISH_CHK_LOOP = 3
 shutdown = False
 socat_script_path = "./socat.sh"
+
+buffer = queue.Queue()  # semplice queue FIFO
 
 class serial_port:
 	def __init__(self,label,port_number,baudrate):
@@ -71,7 +74,7 @@ def serial_port_handler(dev_name, port, baudrate):
 	while not shutdown:
 		line = s_port.read_line()
 		if len(line) > 0:
-			print(line)
+			buffer.put(line)
 	
 	print(f"Closing handler for port {port}...")
 	s_port.close_connection()
@@ -101,6 +104,9 @@ if __name__ == '__main__':
 	thread_1.start()
 	thread_2.start()
 	thread_3.start()
+
+	while not shutdown:
+		print(buffer.get())
 
 	while thread_1.is_alive() or thread_2.is_alive() or thread_3.is_alive():
 		time.sleep(FINISH_CHK_LOOP)
