@@ -1,25 +1,18 @@
-'''
-    Serial Port Reader:
-    un semplice script per leggere e stampare a video
-    i dati emessi da un dispositivo seriale.
-'''
-import os
-import threading
-import queue
+from threading import Thread
+from queue import Queue, Empty
 import time
 import serial
-import signal
-import sys
 import subprocess
+import signal
+from multiprocessing import Pipe
+
+shutdown = False
 
 DEVICE_NAME = ["Kendau GPS", "Control Unit", "Gyroscope"]
 SERIAL_PORT = ["/dev/mypty/ptySENS1_V", "/dev/mypty/ptySENS2_V", "/dev/mypty/ptySENS3_V"]
 BAUDRATE = 9600
 FINISH_CHK_LOOP = 3
-shutdown = False
 socat_script_path = "./socat.sh"
-
-buffer = queue.Queue()  # semplice queue FIFO
 
 class serial_port:
 	def __init__(self,label,port_number,baudrate):
@@ -31,10 +24,10 @@ class serial_port:
 		self.port.bytesize = serial.EIGHTBITS
 		self.port.parity = serial.PARITY_NONE
 		self.port.stopbits = serial.STOPBITS_ONE
-		self.port.timeout = 20         	# Leggeremo una linea per volta: il timeout (in secondi) serve a non rimanere bloccati in caso di assenza di dati dal dispositivo
-		self.port.xonxoff = False    	# disabilita il flusso di controllo software
-		self.port.rtscts = False     	# disabilita il flusso di controllo hardware (RTS/CTS)
-		self.port.dsrdtr = False     	# disabilita il flusso di controllo hardware (DSR/DTR)
+		self.port.timeout = 20
+		self.port.xonxoff = False
+		self.port.rtscts = False
+		self.port.dsrdtr = False
 
 	def open_connection(self):
 		if not self.open:
@@ -65,9 +58,9 @@ def signal_handler(signal, frame):
 	shutdown = True
 	print('You pressed Ctrl+C!\nExiting...')
 
-def serial_port_handler(dev_name, port, baudrate):
+def serial_port_handler(dev_name, port, baudrate, buffer: Queue):
 	
-	print(f"Running handler for port {port}...")
+	print(f"Starting handler for port {port}...")
 	s_port = serial_port(dev_name, port, baudrate)
 	s_port.open_connection()
 
@@ -79,37 +72,56 @@ def serial_port_handler(dev_name, port, baudrate):
 	print(f"Closing handler for port {port}...")
 	s_port.close_connection()
 
-if __name__ == '__main__':
+def run_serial_port_handler(index) -> tuple[Thread, Queue]:
+	buffer = Queue()  # semplice queue FIFO
+	thread = Thread(target=serial_port_handler, args=[DEVICE_NAME[index], SERIAL_PORT[index], BAUDRATE, buffer])
+	thread.start()
+	return (thread, buffer)
 
+# Pipe is the message channel to data_parser
+def start_serial_port_reader(pipe):
 	# Creates 3 serial ports couples with socat
 	# GPS data is transmitted on 			/dev/mypty/ptySENS1 and read on /dev/mypty/ptySENS1_V
 	# Control Unit data is transmitted on 	/dev/mypty/ptySENS2 and read on /dev/mypty/ptySENS2_V
 	# Gyroscope data is transmitted on 		/dev/mypty/ptySENS3 and read on /dev/mypty/ptySENS3_V
+
+	signal.signal(signal.SIGINT, signal_handler)
+	print('Press Ctrl+C to stop and exit!')
+
 	socat_process = subprocess.Popen(socat_script_path)
 
 	for item in SERIAL_PORT:
 		print(f"Listening for messages on {item}.")
 
 	time.sleep(2)
+	
+	buffers: list[Queue] = []
+	threads: list[Thread] = []
 
-	# 3 serial ports receiving data
-	signal.signal(signal.SIGINT, signal_handler)
-	print('Press Ctrl+C to stop and exit!')
+	for i in range(3):
+		(thrd, buff) = run_serial_port_handler(i)
+		buffers.append(buff)
+		threads.append(thrd)
 
-
-	thread_1 = threading.Thread(target=serial_port_handler, args=[DEVICE_NAME[0], SERIAL_PORT[0], BAUDRATE])
-	thread_2 = threading.Thread(target=serial_port_handler, args=[DEVICE_NAME[1], SERIAL_PORT[1], BAUDRATE])
-	thread_3 = threading.Thread(target=serial_port_handler, args=[DEVICE_NAME[2], SERIAL_PORT[2], BAUDRATE])
-
-	thread_1.start()
-	thread_2.start()
-	thread_3.start()
-
+	# loops over buffers, checks one per time if there is anything to print
 	while not shutdown:
-		print(buffer.get())
 
-	while thread_1.is_alive() or thread_2.is_alive() or thread_3.is_alive():
+		# TODO: it iterates over buffers and a lot of time is wasted, find a way to optimize this
+		for buffer in buffers:
+			try:
+				msg = buffer.get(False)
+				# Sends data from the buffer to data_parser
+				# TODO: manage the 3 buffers in 3 separated channels
+				pipe.send(msg)
+			except Empty:
+				# print("Buffer is empty")
+				continue
+			except:
+				print("An error occurred while getting data from buffer.")
+
+	# waits that all the threads finished (if the signal_handler is alted)
+	while threads[0].is_alive() or threads[1].is_alive() or threads[2].is_alive():
 		time.sleep(FINISH_CHK_LOOP)
 
+	pipe.close()
 	socat_process.kill()
-	sys.exit(0)
