@@ -37,7 +37,7 @@ def start_data_publisher(pipes: list[multiprocessing.Queue]):
         for i in range(3):
             try:
                 msg = pipes[i].get(block=False)
-                publisher_logger.info(f"[{topics[i]}]: Received message = {msg}")
+                # publisher_logger.info(f"[{topics[i]}]: Received message = {msg}")
                 mqttc.publish(topics[i], msg)
             except:
                 # publisher_logger.error("Error while reading message from pipe.")
