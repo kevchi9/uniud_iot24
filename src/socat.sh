@@ -6,8 +6,8 @@ terminate() {
     exit
 }
 
-socat -d -d pty,raw,echo=0,link=/dev/mypty/ptySENS1 pty,raw,echo=0,link=/dev/mypty/ptySENS1_V &
-socat -d -d pty,raw,echo=0,link=/dev/mypty/ptySENS2 pty,raw,echo=0,link=/dev/mypty/ptySENS2_V &
-socat -d -d pty,raw,echo=0,link=/dev/mypty/ptySENS3 pty,raw,echo=0,link=/dev/mypty/ptySENS3_V &
+socat -d -d pty,raw,echo=0,link=../mypty/ptySENS1 pty,raw,echo=0,link=../mypty/ptySENS1_V &>>../socat.log &
+socat -d -d pty,raw,echo=0,link=../mypty/ptySENS2 pty,raw,echo=0,link=../mypty/ptySENS2_V &>>../socat.log &
+socat -d -d pty,raw,echo=0,link=../mypty/ptySENS3 pty,raw,echo=0,link=../mypty/ptySENS3_V &>>../socat.log &
 
 wait
