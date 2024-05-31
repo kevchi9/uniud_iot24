@@ -15,6 +15,7 @@ The "pipes" used in the project are actually `multiprocess queues`, used to send
 
 ### MQTT Topics
 Each topic receives data generated from a single data source (sensor).
+
 The topics are the following (might change in the future):
 - Kendau_GPS
 - Control_Unit
