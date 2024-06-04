@@ -3,10 +3,12 @@ import math
 import os
 
 # I would use CONSTANTS for this purpose
-ELECTRICS = ['airflowspeed', 'parkingbrake', 'oil', 'engineRunning',
-                     'steering', 'abs', 'gear', 'clutch_input', 'throttle_input',
-                     'brake_input', 'rpm', 'reverse', 'odometer', 'wheelspeed', 'esc_active',
-                     'oil_temperature', 'water_temperature']
+ELECTRICS = ['airflowspeed', 'engineRunning',
+            'steering', 'abs', 'gear', 'clutch_input', 'throttle_input',
+            'brake_input', 'rpm', 'wheelspeed', 'esc_active',
+            'oil_temperature', 'water_temperature', 'low_pressure']
+
+IMU = []
 
 # We could do this dynamic to reuse it for other kind of data
 def filter_json_electrics(json_data, fields_to_keep):
@@ -22,6 +24,16 @@ def filter_json_electrics(json_data, fields_to_keep):
 
     return electrics
 
+def filter_json_imu(json_data):
+    imu = {}
+    fields = ['x', 'y', 'z']
+    
+    for value in json_data['state']['rotation']:
+        for entry in fields:
+            imu[entry] = value
+
+    return imu
+
 def append_entry(json):
     string = ''
     for _, value in json.items():
@@ -36,65 +48,40 @@ def metriGPS (x, y):
     long=x/l_long + 13.212077351133791
     return  lat, long
 
-def convert_to_nmea(lat, lon):
-    # Convert latitude
-    lat_deg = int(abs(lat))
-    lat_min = (abs(lat) - lat_deg) * 60
-    lat_dir = 'N' if lat >= 0 else 'S'
-    
-    # Format latitude as DDMM.MMMM
-    lat_nmea = f"{lat_deg:02d}{lat_min:07.4f},{lat_dir}"
-    
-    # Convert longitude
-    lon_deg = int(abs(lon))
-    lon_min = (abs(lon) - lon_deg) * 60
-    lon_dir = 'E' if lon >= 0 else 'W'
-    
-    # Format longitude as DDDMM.MMMM
-    lon_nmea = f"{lon_deg:03d}{lon_min:07.4f},{lon_dir}"
-    
-    return lat_nmea, lon_nmea
+if __name__ == '__main__':
 
-# Load the JSON data
-data_batch = {}
-path = 'source_data/pickles/'
-for filename in os.listdir(path):
-    with open(path + filename, 'rb') as logfile:
-        data_batch = data_batch | pickle.load(logfile)
+    data_batch = {}
+    path = 'source_data/pickles/'
+    for filename in os.listdir(path):
+        with open(path + filename, 'rb') as logfile:
+            data_batch = data_batch | pickle.load(logfile)
 
+    #Electrics
+    json_list = []
+    for _, value in data_batch.items():
+        json_list.append(filter_json_electrics(value, ELECTRICS))    
 
-#Electrics
-json_list = []
+    # Create a new file txt to write the data (each line every 50ms)
+    with open('source_data/electrics_to_serial.txt', 'w') as f:
+        for entry in json_list:
+            f.write(append_entry(entry) + '\n')
 
-for _, value in data_batch.items():
-    json_list.append(filter_json_electrics(value, ELECTRICS))
+    #GPS
+    json_list = []
 
-last = json_list[0]
-for entry in json_list:
-    for key, value in entry.items():
-        if last[key] != value:
-            last[key] = value
-        else:
-            entry[key] = ''    
+    for _, value in data_batch.items():
+        json_list.append(value['state']['pos'])
 
-# Create a new file txt to write the data (each line every 50ms)
-with open('source_data/electrics_to_serial.txt', 'w') as f:
-    for entry in json_list:
-        f.write(append_entry(entry) + '\n')
+    with open('source_data/gps_to_serial.txt', 'w') as f:
+        for entry in json_list:
+            lat, long = metriGPS(entry[0], entry[1])
+            f.write(str(lat) + ',' + str(long) + '\n')
 
+    #IMU
+    json_list = []
+    for _, value in data_batch.items():
+        json_list.append(filter_json_imu(value))
 
-#GPS
-json_list = []
-
-for _, value in data_batch.items():
-    json_list.append(value['state']['pos'])
-
-with open('source_data/gps_to_serial.txt', 'w') as f:
-    for entry in json_list:
-        lat, long = metriGPS(entry[0], entry[1])
-        f.write(str(lat) + ',' + str(long) + '\n')
-
-
-'''
-damage_to_keep = ['low_pressure', 'part_damage']
-'''
+    with open('source_data/imu_to_serial.txt', 'w') as f:
+        for entry in json_list:
+            f.write(str(entry) + '\n')
