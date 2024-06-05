@@ -4,8 +4,10 @@ import logging, logging.config
 from time import sleep
 import multiprocessing
 
-BROKER_ADDR = "127.0.0.1"
+BROKER_ADDR = "85.235.151.197"
 BROKER_PORT = 1883
+BROKER_UNAME = "rpi-mqtt"
+BROKER_PASSWD = "iot-24"
 
 topics = ["Kendau_GPS", "Control_Unit", "Gyroscope"]
 
@@ -20,15 +22,22 @@ def init_logger():
 	logging.config.fileConfig('../logging.conf')
 	publisher_logger = logging.getLogger("publisher_logger")
 
+def on_connect(self, client, userdata, flags, rc):
+    if rc == 0:
+        publisher_logger.info(f"Data Publisher succesfully connected to MQTT broker: {BROKER_ADDR}")
+    else:
+        publisher_logger.critical(f"Failed to connect to MQTT broker. Return code: {rc}")
+
 def start_data_publisher(pipes: list[multiprocessing.Queue]):
 
     init_logger()
 
     signal.signal(signal.SIGINT, signal_handler)
     mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+    mqttc.on_connect = on_connect
+    mqttc.username_pw_set(BROKER_UNAME, BROKER_PASSWD)
     mqttc.connect(BROKER_ADDR, BROKER_PORT, keepalive=60)
-
-    publisher_logger.info(f"Data Publisher succesfully connected to MQTT broker: {BROKER_ADDR}")
+    mqttc.loop(timeout=1.0)  # check only at the beginning of the connection
     
     while not shutdown:
 

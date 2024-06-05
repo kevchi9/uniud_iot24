@@ -1,7 +1,7 @@
 #!/bin/bash
 
-FILES=("source_data/electrics_to_serial.txt" "source_data/gps_to_serial.txt" "source_data/file3.txt")
-PORTS=("/dev/mypty/ptySENS1" "/dev/mypty/ptySENS2" "/dev/mypty/ptySENS3")
+FILES=("source_data/electrics_to_serial.txt" "source_data/gps_to_serial.txt" "source_data/imu_to_serial.txt")
+PORTS=("mypty/ptySENS1" "mypty/ptySENS2" "mypty/ptySENS3")
 
 # Check if all files and ports exist
 for i in "${!FILES[@]}"; do

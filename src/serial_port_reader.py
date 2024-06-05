@@ -168,7 +168,7 @@ def clean_serial_path():
 		os.removedirs(serial_ports_path)
 	except OSError:
 		for item in os.listdir(serial_ports_path):
-			os.remove(f"../mypty/{item}")
+			os.remove(f"{serial_ports_path}{item}")
 		os.removedirs(serial_ports_path)
 
 if __name__ == "__main__":
