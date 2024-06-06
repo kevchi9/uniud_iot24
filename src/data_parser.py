@@ -23,21 +23,22 @@ def truncate_decimal(number : str, decimals=5):
      
 def parse_gps(data):
     values = data.split(',')
-    for value in values:
-         value = truncate_decimal(value)
-    return (f"GPS, lat={value[0]},long={value[1]}")
+    for value in range(1, len(values)):
+        values[value] = truncate_decimal(values[value])
+    return (f"GPS, time={value[0]},lat={value[1]},long={value[2]}")
 
 # TODO: implement this
 def parse_ecu(data):
     return data
 
 def parse_imu(data):
-    data = json.loads(data)
+    values = data.split(',')
+    data = json.loads(values[1])
     parsed_data = f"x={data['x']},y={data['y']},z={data['z']}"
-    return (f"IMU, {parsed_data}")
+    return (f"IMU, time={values[0]},{parsed_data}")
 
 #spaces and commas are crucial to respect influx db line protocol, do not change those
-def parse_data(sensor, data, timestamp):
+def parse_data(sensor, data):
     if sensor == 0:
         parsed_data = parse_gps(data)
     elif sensor == 1:
@@ -47,7 +48,7 @@ def parse_data(sensor, data, timestamp):
     else:
         parser_logger.info("Parsing not specified for input sensor")
     
-    return parsed_data + ' ' + str(timestamp)
+    return parsed_data
 
 def start_data_parser(from_serial: list[multiprocessing.Queue], to_mqtt: list[multiprocessing.Queue]):
     signal.signal(signal.SIGINT, signal_handler)
@@ -63,8 +64,7 @@ def start_data_parser(from_serial: list[multiprocessing.Queue], to_mqtt: list[mu
             try:        
                 # TODO: make sure this stops when buffer is empty
                 data = from_serial[i].get(block=False)
-                timestamp = 0
-                parsed_data = parse_data(i, data, timestamp)
+                parsed_data = parse_data(i, data)
                 # Not actually parsed, function has to be implemented
                 to_mqtt[i].put(f"Parsed data: {parsed_data}")
                 time.sleep(0.05)

@@ -1,4 +1,5 @@
 from threading import Thread
+from datetime import datetime
 from queue import Queue, Empty
 import multiprocessing 
 import time
@@ -60,6 +61,13 @@ class serial_port:
 			self.port.close()
 			self.open = False
 
+def get_timestamp():
+    # Get the current time with millisecond precision
+    now = datetime.now()
+    # Format the timestamp as an ISO 8601 string with milliseconds
+    timestamp = now.isoformat(timespec='milliseconds')
+    return timestamp
+
 def serial_port_handler(dev_name, port, baudrate, buffer: Queue):
 	s_port = serial_port(dev_name, port, baudrate)
 	try:
@@ -67,7 +75,7 @@ def serial_port_handler(dev_name, port, baudrate, buffer: Queue):
 		while not shutdown:
 			line = s_port.read_line()
 			if len(line) > 0:
-				buffer.put(line)
+				buffer.put(get_timestamp() + "," + line)
 	except serial.serialutil.SerialException:
 		raise serial.serialutil.SerialException
 	
