@@ -22,11 +22,11 @@ def init_logger():
 	logging.config.fileConfig('../logging.conf')
 	publisher_logger = logging.getLogger("publisher_logger")
 
-def on_connect(self, client, userdata, flags, rc):
-    if rc == 0:
-        publisher_logger.info(f"Data Publisher succesfully connected to MQTT broker: {BROKER_ADDR}")
+def on_connect(client, userdata, flags, reason_code, properties):
+    if reason_code.is_failure:
+        publisher_logger.critical(f"Failed to connect to MQTT broker. Return code: {reason_code}")
     else:
-        publisher_logger.critical(f"Failed to connect to MQTT broker. Return code: {rc}")
+        publisher_logger.info(f"Data Publisher succesfully connected to MQTT broker: {BROKER_ADDR}")
 
 def start_data_publisher(pipes: list[multiprocessing.Queue]):
 
