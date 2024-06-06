@@ -38,6 +38,8 @@ def start_data_publisher(pipes: list[multiprocessing.Queue]):
     mqttc.username_pw_set(BROKER_UNAME, BROKER_PASSWD)
     mqttc.connect(BROKER_ADDR, BROKER_PORT, keepalive=60)
     mqttc.loop(timeout=1.0)  # check only at the beginning of the connection
+
+    # sarebbe da mantenere attivo in continuazione il loop e non solo un secondo all'inizio
     
     while not shutdown:
 
