@@ -5,7 +5,7 @@ from time import sleep
 import multiprocessing
 
 BROKER_ADDR = "85.235.151.197"
-BROKER_PORT = 1883
+BROKER_PORT = 1884
 BROKER_UNAME = "rpi-mqtt"
 BROKER_PASSWD = "iot-24"
 
@@ -34,12 +34,16 @@ def start_data_publisher(pipes: list[multiprocessing.Queue]):
 
     signal.signal(signal.SIGINT, signal_handler)
     mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
-    mqttc.on_connect = on_connect
     mqttc.username_pw_set(BROKER_UNAME, BROKER_PASSWD)
-    mqttc.connect(BROKER_ADDR, BROKER_PORT, keepalive=60)
-    mqttc.loop(timeout=1.0)  # check only at the beginning of the connection
+    try:
+        mqttc.connect(BROKER_ADDR, BROKER_PORT, keepalive=60)
+        mqttc.loop_start()
+        publisher_logger.info(f"Data Publisher succesfully connected to MQTT broker: {BROKER_ADDR} on port {BROKER_PORT}")
 
-    # sarebbe da mantenere attivo in continuazione il loop e non solo un secondo all'inizio
+    except TimeoutError:
+        global shutdown
+        shutdown = True
+        publisher_logger.info(f"Data Publisher failed to connect to MQTT broker: {BROKER_ADDR} on port {BROKER_PORT}")
     
     while not shutdown:
 
