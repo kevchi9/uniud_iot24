@@ -28,7 +28,7 @@ def parse_gps(data):
     values = data.split(',')
     for i in range(len(values)):
         values[i] = truncate_decimal(values[i])
-    return (f"GPS, lat={values[0]},long={values[1]}")
+    return (f"GPS,device=kendau_gps lat={values[0]},long={values[1]}")
 
 # TODO: implement this
 def parse_ecu(data):
@@ -65,12 +65,12 @@ def parse_ecu(data):
         else:
             out = out + ecu_sensors[i] + '=' + values[i]
 
-    return (f"ECU, {out}")
+    return (f"ECU,device=control_unit {out}")
 
 def parse_imu(data):
     data = ast.literal_eval(data)
     parsed_data = f"x={round(data['x'], 3)},y={round(data['y'], 3)},z={round(data['z'], 3)}"
-    return (f"IMU, {parsed_data}")
+    return (f"IMU,device=gyroscope {parsed_data}")
 
 #spaces and commas are crucial to respect influx db line protocol, do not change those
 def parse_data(sensor, data):
@@ -89,7 +89,7 @@ def start_data_parser(from_serial: list[multiprocessing.Queue], to_mqtt: list[mu
     signal.signal(signal.SIGINT, signal_handler)
     init_logger()
     
-    parser_logger.debug("[Data parser has to be implemented, doing nothing.]")
+    #parser_logger.debug("[Data parser has to be implemented, doing nothing.]")
 
     while not shutdown:
         
@@ -100,9 +100,7 @@ def start_data_parser(from_serial: list[multiprocessing.Queue], to_mqtt: list[mu
                 # TODO: make sure this stops when buffer is empty
                 data = from_serial[i].get(block=False)
                 parsed_data = parse_data(i, data)
-                # Not actually parsed, function has to be implemented
-                to_mqtt[i].put(f"Parsed data: {parsed_data}")
-                time.sleep(0.05)
+                to_mqtt[i].put(parsed_data)
             except:
                 # parser_logger.error("Error while reading message from pipe.")
                 empty_counter += 1

@@ -5,7 +5,7 @@ from time import sleep
 import multiprocessing
 
 BROKER_ADDR = "85.235.151.197"
-BROKER_PORT = 1884
+BROKER_PORT = 1883
 BROKER_UNAME = "rpi-mqtt"
 BROKER_PASSWD = "iot-24"
 
@@ -38,12 +38,12 @@ def start_data_publisher(pipes: list[multiprocessing.Queue]):
     try:
         mqttc.connect(BROKER_ADDR, BROKER_PORT, keepalive=60)
         mqttc.loop_start()
-        publisher_logger.info(f"Data Publisher succesfully connected to MQTT broker: {BROKER_ADDR} on port {BROKER_PORT}")
+        publisher_logger.info(f"Data Publisher succesfully connected to MQTT broker: {BROKER_ADDR}:{BROKER_PORT}")
 
     except TimeoutError:
         global shutdown
         shutdown = True
-        publisher_logger.info(f"Data Publisher failed to connect to MQTT broker: {BROKER_ADDR} on port {BROKER_PORT}")
+        publisher_logger.critical(f"Data Publisher failed to connect to MQTT broker: Timeout error on {BROKER_ADDR}:{BROKER_PORT}")
     
     while not shutdown:
 

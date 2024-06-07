@@ -1,5 +1,4 @@
 from threading import Thread
-from datetime import datetime
 from queue import Queue, Empty
 import multiprocessing 
 import time
@@ -62,11 +61,9 @@ class serial_port:
 			self.open = False
 
 def get_timestamp():
-    # Get the current time with millisecond precision
-    now = datetime.now()
-    # Format the timestamp as an ISO 8601 string with milliseconds
-    timestamp = now.isoformat(timespec='milliseconds')
-    return timestamp
+    # Get the current time in nanoseconds
+    timestamp_ns = str(time.time_ns())
+    return timestamp_ns
 
 def serial_port_handler(dev_name, port, baudrate, buffer: Queue):
 	s_port = serial_port(dev_name, port, baudrate)
