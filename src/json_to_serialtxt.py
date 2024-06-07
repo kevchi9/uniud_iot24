@@ -1,6 +1,7 @@
 import pickle
 import math
 import os
+import json
 
 # I would use CONSTANTS for this purpose
 ELECTRICS = ['airflowspeed', 'engineRunning',
@@ -65,6 +66,10 @@ if __name__ == '__main__':
     with open('source_data/electrics_to_serial.txt', 'w') as f:
         for entry in json_list:
             f.write(append_entry(entry) + '\n')
+
+    # Save reference json to create the parser for the Raspberry 
+    with open('source_data/electrics.json', 'w') as file:
+            json.dump(json_list[0], file, indent=4)
 
     #GPS
     json_list = []

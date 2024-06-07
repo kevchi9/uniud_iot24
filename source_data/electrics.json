@@ -1,0 +1,23 @@
+{
+    "airflowspeed": 2.5827226449566284e-05,
+    "engineRunning": 1.0,
+    "steering": -1.778399999999983,
+    "abs": 0.0,
+    "gear": 0.0,
+    "clutch_input": 0.0,
+    "throttle_input": 0.0,
+    "brake_input": 0.0,
+    "rpm": 921.048163794373,
+    "wheelspeed": 0.00010393103125860777,
+    "esc_active": false,
+    "oil_temperature": 80.95404618442238,
+    "water_temperature": 80.11541362563557,
+    "FL_CoreTemperature": 1.9320669629392564,
+    "FL_SurfaceTemperature": 1.9319396972656477,
+    "RL_CoreTemperature": 1.931995001522489,
+    "RL_SurfaceTemperature": 1.9319396972656477,
+    "RR_CoreTemperature": 1.931995001522489,
+    "RR_SurfaceTemperature": 1.9319396972656477,
+    "FR_CoreTemperature": 1.9320669629392564,
+    "FR_SurfaceTemperature": 1.9319396972656477
+}

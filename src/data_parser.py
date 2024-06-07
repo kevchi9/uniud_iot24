@@ -3,7 +3,7 @@ import time
 import logging, logging.config
 from time import sleep
 import multiprocessing
-import json
+import ast
 
 shutdown = False
 
@@ -17,38 +17,73 @@ def init_logger():
 	parser_logger = logging.getLogger("parser_logger")
      
 def truncate_decimal(number : str, decimals=5):
-    integer_part, decimal_part = number.split('.')
-    truncated_decimal = decimal_part[:decimals]
-    return f"{integer_part}.{truncated_decimal}"
+    try:
+        integer_part, decimal_part = number.split('.')
+        truncated_decimal = decimal_part[:decimals]
+        return f"{integer_part}.{truncated_decimal}"
+    except:
+        return number
      
 def parse_gps(data):
     values = data.split(',')
-    for value in range(1, len(values)):
-        values[value] = truncate_decimal(values[value])
-    return (f"GPS, time={value[0]},lat={value[1]},long={value[2]}")
+    for i in range(len(values)):
+        values[i] = truncate_decimal(values[i])
+    return (f"GPS, lat={values[0]},long={values[1]}")
 
 # TODO: implement this
 def parse_ecu(data):
-    return data
+    out = ''
+    values = data.split(',')
+    ecu_sensors = [
+    "airflowspeed",
+    "engineRunning",
+    "steering",
+    "abs",
+    "gear",
+    "clutch_input",
+    "throttle_input",
+    "brake_input",
+    "rpm",
+    "wheelspeed",
+    "esc_active",
+    "oil_temperature",
+    "water_temperature",
+    "FL_CoreTemperature",
+    "FL_SurfaceTemperature",
+    "RL_CoreTemperature",
+    "RL_SurfaceTemperature",
+    "RR_CoreTemperature",
+    "RR_SurfaceTemperature",
+    "FR_CoreTemperature",
+    "FR_SurfaceTemperature"]
+
+    for i in range(len(values)-1):
+        values[i] = truncate_decimal(values[i], 3)
+
+        if i < len(values) - 2:
+            out = out + ecu_sensors[i] + '=' + values[i] + ','
+        else:
+            out = out + ecu_sensors[i] + '=' + values[i]
+
+    return (f"ECU, {out}")
 
 def parse_imu(data):
-    values = data.split(',')
-    data = json.loads(values[1])
-    parsed_data = f"x={data['x']},y={data['y']},z={data['z']}"
-    return (f"IMU, time={values[0]},{parsed_data}")
+    data = ast.literal_eval(data)
+    parsed_data = f"x={round(data['x'], 3)},y={round(data['y'], 3)},z={round(data['z'], 3)}"
+    return (f"IMU, {parsed_data}")
 
 #spaces and commas are crucial to respect influx db line protocol, do not change those
 def parse_data(sensor, data):
+    values = data.split(',', 1)
+
     if sensor == 0:
-        parsed_data = parse_gps(data)
+        parsed_data = parse_gps(values[1])
     elif sensor == 1:
-        parsed_data = parse_ecu(data)
+        parsed_data = parse_ecu(values[1])
     elif sensor == 2:
-        parsed_data = parse_imu(data)
-    else:
-        parser_logger.info("Parsing not specified for input sensor")
+        parsed_data = parse_imu(values[1])
     
-    return parsed_data
+    return parsed_data + ' ' + values[0]
 
 def start_data_parser(from_serial: list[multiprocessing.Queue], to_mqtt: list[multiprocessing.Queue]):
     signal.signal(signal.SIGINT, signal_handler)
