@@ -1,13 +1,18 @@
 import paho.mqtt.client as mqtt # type: ignore
 import signal
+import ssl
 import logging, logging.config
 from time import sleep
 import multiprocessing
 
 BROKER_ADDR = "85.235.151.197"
-BROKER_PORT = 1883
+BROKER_PORT = 8883
 BROKER_UNAME = "rpi-mqtt"
 BROKER_PASSWD = "iot-24"
+
+CLIENT_CERT = "../ssl/client.crt"
+CLIENT_KEY = "../ssl/client.key"
+CA_CERT = "../ssl/ca.crt"
 
 topics = ["Kendau_GPS", "Control_Unit", "Gyroscope"]
 
@@ -34,6 +39,10 @@ def start_data_publisher(pipes: list[multiprocessing.Queue]):
 
     signal.signal(signal.SIGINT, signal_handler)
     mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+    # Transport layer security setup
+    mqttc.tls_set(CA_CERT, CLIENT_CERT, CLIENT_KEY, tls_version=mqtt.ssl.PROTOCOL_TLS)
+    mqttc.tls_insecure_set(True)
+
     mqttc.username_pw_set(BROKER_UNAME, BROKER_PASSWD)
     try:
         mqttc.connect(BROKER_ADDR, BROKER_PORT, keepalive=60)
