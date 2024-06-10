@@ -27,11 +27,9 @@ def filter_json_electrics(json_data, fields_to_keep):
 
 def filter_json_imu(json_data):
     imu = {}
-    fields = ['x', 'y', 'z']
     
-    for value in json_data['state']['rotation']:
-        for entry in fields:
-            imu[entry] = value
+    for entry, value in json_data['imu'].items():
+        imu[entry] = value
 
     return imu
 

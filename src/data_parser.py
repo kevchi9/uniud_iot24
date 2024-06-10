@@ -16,7 +16,7 @@ def init_logger():
 	logging.config.fileConfig('../logging.conf')
 	parser_logger = logging.getLogger("parser_logger")
      
-def truncate_decimal(number : str, decimals=5):
+def truncate_decimal(number : str, decimals):
     try:
         integer_part, decimal_part = number.split('.')
         truncated_decimal = decimal_part[:decimals]
@@ -27,10 +27,9 @@ def truncate_decimal(number : str, decimals=5):
 def parse_gps(data):
     values = data.split(',')
     for i in range(len(values)):
-        values[i] = truncate_decimal(values[i])
+        values[i] = truncate_decimal(values[i], 8)
     return (f"GPS,device=kendau_gps lat={values[0]},long={values[1]}")
 
-# TODO: implement this
 def parse_ecu(data):
     out = ''
     values = data.split(',')
@@ -69,8 +68,13 @@ def parse_ecu(data):
 
 def parse_imu(data):
     data = ast.literal_eval(data)
-    parsed_data = f"x={round(data['x'], 3)},y={round(data['y'], 3)},z={round(data['z'], 3)}"
-    return (f"IMU,device=gyroscope {parsed_data}")
+    fields = ['gY', 'gZ', 'aZ', 'aX', 'aY', 'gX']
+    out = ''
+    
+    for entry in fields:
+        out = out + entry + '=' + str(data[entry]) + ','
+
+    return (f"IMU,device=gyroscope {out[:-1]}")
 
 #spaces and commas are crucial to respect influx db line protocol, do not change those
 def parse_data(sensor, data):

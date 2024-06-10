@@ -1,7 +1,7 @@
 from data_parser import parse_data
 
 def read_file_on_enter(file_path):
-    try:
+    #try:
         with open(file_path, 'r') as file:
             lines = file.readlines()
         
@@ -9,12 +9,12 @@ def read_file_on_enter(file_path):
         
         for line in lines:
             input()
-            print(parse_data(1, '123,' + line.strip()))
+            print(parse_data(2, '123,' + line.strip()))
 
-    except Exception as e:
-        print(f"An unexpected error occurred: {e}")
+    #except Exception as e:
+    #    print(f"An unexpected error occurred: {e}")
 
 
 if __name__ == '__main__':
 
-    read_file_on_enter('source_data/electrics_to_serial.txt')
+    read_file_on_enter('source_data/imu_to_serial.txt')
