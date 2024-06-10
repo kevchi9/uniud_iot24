@@ -106,7 +106,7 @@ def start_data_parser(from_serial: list[multiprocessing.Queue], to_mqtt: list[mu
                 empty_counter += 1
             
         if empty_counter == 3:
-             sleep(3)
+            sleep(3)
 
     for pipe in from_serial:
         pipe.cancel_join_thread()

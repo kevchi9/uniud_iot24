@@ -39,6 +39,9 @@ def start_data_publisher(pipes: list[multiprocessing.Queue]):
 
     signal.signal(signal.SIGINT, signal_handler)
     mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+    
+    # TODO: verify what appens in case of TimeOutError
+    
     # Transport layer security setup
     mqttc.tls_set(CA_CERT, CLIENT_CERT, CLIENT_KEY, tls_version=mqtt.ssl.PROTOCOL_TLS)
     mqttc.tls_insecure_set(True)
