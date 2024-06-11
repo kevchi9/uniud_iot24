@@ -4,7 +4,7 @@
 
 ## Raspberry modules
 
-![image](https://github.com/kevchi9/uniud_iot24/blob/main/resources/img/iot_rasp_components.png)
+![rasp_components(1)](https://github.com/kevchi9/uniud_iot24/assets/62105685/3ba347d0-6faf-4569-96ca-5853a3b88b58)
 
 - `Serial Port Reader(s)`: provided by the serial_port_reader.py file, which splits the workload on 3 different **threads**; each thread reads from a (virtual) serial port, then sends data on three dedicated pipes to the `Data Parser`;
 - `Data Parser`: receives data on 3 pipes mentioned above, parses it, and forwards it on other 3 dedicated pipes to `Data Publisher`.
