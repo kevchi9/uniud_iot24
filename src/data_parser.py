@@ -1,5 +1,4 @@
 import signal
-import time
 import logging, logging.config
 from time import sleep
 import multiprocessing

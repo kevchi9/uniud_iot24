@@ -36,7 +36,7 @@ while :; do
     if read -u "$fd" -r line; then
       echo "$line" > "$port"
       done_reading=false
-      sleep 0.05  # Sleep for 50 milliseconds
+      sleep 0.015  # Sleep for 50 milliseconds
     fi
   done
   if $done_reading; then
