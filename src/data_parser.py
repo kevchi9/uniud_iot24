@@ -76,14 +76,14 @@ def parse_imu(data):
 #spaces and commas are crucial to respect influx db line protocol, do not change those
 def parse_data(sensor, data):
     values = data.split(',', 1)
-
+    
     if sensor == 0:
         parsed_data = parse_gps(values[1])
     elif sensor == 1:
         parsed_data = parse_ecu(values[1])
     elif sensor == 2:
         parsed_data = parse_imu(values[1])
-    
+
     return parsed_data + ' ' + values[0]
 
 def start_data_parser(from_serial: list[multiprocessing.Queue], to_mqtt: list[multiprocessing.Queue]):

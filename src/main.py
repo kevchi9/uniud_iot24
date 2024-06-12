@@ -38,7 +38,7 @@ def main():
     Process(target=start_serial_port_reader, name="serial_port_reader", args=(p_to_parser, )).start()
     Process(target=start_data_parser, name="data_parser", args=(p_to_parser, p_to_publisher, )).start()
     Process(target=start_data_publisher, name="data_publisher", args=(p_to_publisher, )).start()
-
+    
     while not shutdown:
         sleep(3)
 

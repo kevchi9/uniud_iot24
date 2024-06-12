@@ -1,3 +1,4 @@
+import time
 import paho.mqtt.client as mqttcl # type: ignore
 import paho.mqtt.enums as mqtte # type: ignore
 import signal
@@ -91,23 +92,44 @@ def start_data_publisher(pipes: list[multiprocessing.Queue]):
         mqttc.loop_start()
         # waits for connection
         sleep(1)
-        
+        empty_slot = [0]*2
         while not shutdown:
             if connected:
+                published = 0
                 empty_counter = 0
 
+                start = time.time_ns()
                 for i in range(3):
                     try:
+                        publisher_logger.debug(f"Queue {i} length = {pipes[i].qsize()}.")
                         msg = pipes[i].get(block=False)
-                        res: mqttcl.MQTTMessageInfo = mqttc.publish(topics[i], msg, 1)
-                        if not res.is_published():
-                            res.wait_for_publish(3)
+                        mqttc.publish(topics[i], msg, 0)
+                        
+                        # res: mqttcl.MQTTMessageInfo = mqttc.publish(topics[i], msg, 0)
+                        # if not res.is_published():
+                        #     res.wait_for_publish(3)
+
+                        published += 1
                     except Empty:
                         empty_counter += 1
                     except Exception as e:
                         publisher_logger.critical(f"Unknown exception: {e}")
+                
                 if empty_counter == 3:
-                    sleep(3) 
+                    # checks empty history
+                    if empty_slot[0] == 3 and empty_slot[1] == 3: 
+                        sleep(2.95)
+                
+                sleep(0.045)
+
+
+                # update empty slot array with current value (left rotation by 1)
+                empty_slot[0] = empty_slot[1]
+                empty_slot[1] = empty_counter
+                
+                end = time.time_ns()
+                time_spent = "{:.4f}".format(float((end - start) * (10**-9) ))
+                publisher_logger.debug(f"Published {published} messages in {time_spent} seconds.")
             else:
                 sleep(3)
             
