@@ -1,5 +1,4 @@
 {
-    "airflowspeed": 30.472439827798855,
     "engineRunning": 1.0,
     "steering": 3.3988499999999737,
     "gear": 5.0,
@@ -9,7 +8,6 @@
     "rpm": 3757.2394441049796,
     "abs": 0.0,
     "wheelspeed": 30.245989103017454,
-    "esc_active": false,
     "oil_temperature": 99.07314688008024,
     "water_temperature": 90.23303700964081,
     "FL_CoreTemperature": 241.91201207339697,

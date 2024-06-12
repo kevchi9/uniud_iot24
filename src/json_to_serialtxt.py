@@ -4,10 +4,17 @@ import os
 import json
 
 # I would use CONSTANTS for this purpose
-ELECTRICS = ['airflowspeed', 'engineRunning',
-            'steering', 'abs', 'gear', 'clutch_input', 'throttle_input',
-            'brake_input', 'rpm', 'wheelspeed', 'esc_active',
-            'oil_temperature', 'water_temperature', 'low_pressure']
+ELECTRICS = ["engineRunning",
+    "steering",
+    "abs",
+    "gear",
+    "clutch_input",
+    "throttle_input",
+    "brake_input",
+    "rpm",
+    "wheelspeed",
+    "oil_temperature",
+    "water_temperature"]
 
 IMU = []
 
@@ -55,17 +62,20 @@ if __name__ == '__main__':
         with open(path + filename, 'rb') as logfile:
             data_batch = data_batch | pickle.load(logfile)
 
+
+
+    with open('source_data/reference.json', 'w') as f:
+        json.dump(next(iter(data_batch.values())), f, indent = 4)
+
     #Electrics
     json_list = []
     for _, value in data_batch.items():
-        json_list.append(filter_json_electrics(value, ELECTRICS))    
+        json_list.append(filter_json_electrics(value, ELECTRICS))
 
-    # Create a new file txt to write the data (each line every 50ms)
     with open('source_data/electrics_to_serial.txt', 'w') as f:
         for entry in json_list:
             f.write(append_entry(entry) + '\n')
 
-    # Save reference json to create the parser for the Raspberry 
     with open('source_data/electrics.json', 'w') as file:
             json.dump(json_list[0], file, indent=4)
 

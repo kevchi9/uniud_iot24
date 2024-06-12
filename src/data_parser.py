@@ -33,17 +33,15 @@ def parse_ecu(data):
     out = ''
     values = data.split(',')
     ecu_sensors = [
-    "airflowspeed",
     "engineRunning",
     "steering",
-    "abs",
     "gear",
     "clutch_input",
     "throttle_input",
     "brake_input",
     "rpm",
+    "abs",
     "wheelspeed",
-    "esc_active",
     "oil_temperature",
     "water_temperature",
     "FL_CoreTemperature",
