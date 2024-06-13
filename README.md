@@ -2,6 +2,8 @@ This software (still unnamed) is part of an IoT project for the university's IoT
 
 The software is used (in our case on a Raspberry) to retrieve data from the central unit of a vehicle, a GPS and a gyroscope, parse the data, and send them to a cloud MQTT broker.
 
+In our case, since the project has only learning purposes, all the data sources are emulated using actual data format standards.
+
 The MQTT broker then sends the data through telegraf to influxDB (which is running on the same server).
 
 On the same server Grafana is running and will query the DB to get and plot the data. A dashboard example is shown below.
