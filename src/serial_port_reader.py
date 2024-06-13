@@ -18,7 +18,7 @@ socat_script_path = "./socat.sh"
 
 def init_logger():
 	global serial_logger
-	logging.config.fileConfig('../logging.conf')
+	logging.config.fileConfig('../conf/logging.conf')
 	serial_logger = logging.getLogger("serial_logger")
 
 class serial_port:

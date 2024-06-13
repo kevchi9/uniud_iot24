@@ -16,7 +16,7 @@ def signal_handler(signal, frame):
 
 def init_logger():
 	global root_logger
-	logging.config.fileConfig('../logging.conf')
+	logging.config.fileConfig('../conf/logging.conf')
 	root_logger = logging.getLogger("main_logger")
 
 # Generates 6 Queues

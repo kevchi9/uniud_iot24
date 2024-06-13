@@ -72,9 +72,6 @@ if __name__ == '__main__':
         for entry in json_list:
             f.write(append_entry(entry) + '\n')
 
-    with open('source_data/electrics.json', 'w') as file:
-            json.dump(json_list[0], file, indent=4)
-
     #GPS
     json_list = []
 

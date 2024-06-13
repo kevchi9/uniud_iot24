@@ -12,7 +12,7 @@ def signal_handler(signal, frame):
 
 def init_logger():
 	global parser_logger
-	logging.config.fileConfig('../logging.conf')
+	logging.config.fileConfig('../conf/logging.conf')
 	parser_logger = logging.getLogger("parser_logger")
      
 def truncate_decimal(number : str, decimals):
@@ -35,12 +35,12 @@ def parse_ecu(data):
     ecu_sensors = [
     "engineRunning",
     "steering",
+    "abs",
     "gear",
     "clutch_input",
     "throttle_input",
     "brake_input",
     "rpm",
-    "abs",
     "wheelspeed",
     "oil_temperature",
     "water_temperature",

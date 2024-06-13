@@ -1,6 +1,9 @@
-import beamngpy
+import beamngpy # this must be installed manually, not included in the requirements.txt
 import time
 import pickle
+
+# This file is an example of how to start a simulation with BeamNG
+# As we did for the data generation for this project.
 
 if __name__ == "__main__":
     beamng = beamngpy.BeamNGpy('localhost', 64256, home= 'home_path', user = 'user_path')
@@ -13,6 +16,7 @@ if __name__ == "__main__":
     electrics = beamngpy.sensors.Electrics()
     damage = beamngpy.sensors.Damage()
     timer = beamngpy.sensors.Timer()
+    
     ego.attach_sensor('imu', imu)
     ego.attach_sensor('electrics', electrics)
     ego.attach_sensor('damage', damage)

@@ -1,6 +1,5 @@
 import time
 import paho.mqtt.client as mqttcl # type: ignore
-import paho.mqtt.enums as mqtte # type: ignore
 import signal
 import logging, logging.config
 from time import sleep
@@ -24,7 +23,7 @@ shutdown = False
 
 def load_conf():
     config = configparser.ConfigParser()
-    config.readfp(open(r"../mqtt.conf"))
+    config.readfp(open(r"../conf/mqtt.conf"))
     global BROKER_ADDR, BROKER_PORT, BROKER_UNAME, BROKER_PASSWD, CLIENT_CERT, CLIENT_KEY, CA_CERT
     BROKER_ADDR = config.get('broker_mqtt', 'BROKER_ADDR')
     BROKER_PORT = int(config.get('broker_mqtt', 'BROKER_PORT'))
@@ -36,6 +35,7 @@ def load_conf():
 
 def on_pre_connect(client, userdata):
     publisher_logger.info("Connection attempt with the broker...")
+    sleep(0.5)
 
 def on_connect(client, userdata, flags, reason_code, properties):
     global connected
@@ -64,7 +64,7 @@ def signal_handler(signal, frame):
 
 def init_logger():
 	global publisher_logger
-	logging.config.fileConfig('../logging.conf')
+	logging.config.fileConfig('../conf/logging.conf')
 	publisher_logger = logging.getLogger("publisher_logger")
 
 
@@ -75,9 +75,7 @@ def start_data_publisher(pipes: list[multiprocessing.Queue]):
     load_conf()
     signal.signal(signal.SIGINT, signal_handler)
     mqttc = mqttcl.Client(mqttcl.CallbackAPIVersion.VERSION2)
-    
-    # TODO: verify what appens in case of TimeOutError
-    
+        
     # Transport layer security setup
     
     mqttc.tls_set(CA_CERT, CLIENT_CERT, CLIENT_KEY, tls_version=mqttcl.ssl.PROTOCOL_TLS)
@@ -91,7 +89,7 @@ def start_data_publisher(pipes: list[multiprocessing.Queue]):
         mqttc.connect(BROKER_ADDR, BROKER_PORT, keepalive=60)
         mqttc.loop_start()
         # waits for connection
-        sleep(1)
+        sleep(2)
         empty_slot = [0]*2
         while not shutdown:
             if connected:
@@ -101,13 +99,8 @@ def start_data_publisher(pipes: list[multiprocessing.Queue]):
                 start = time.time_ns()
                 for i in range(3):
                     try:
-                        publisher_logger.debug(f"Queue {i} length = {pipes[i].qsize()}.")
                         msg = pipes[i].get(block=False)
                         mqttc.publish(topics[i], msg, 0)
-                        
-                        # res: mqttcl.MQTTMessageInfo = mqttc.publish(topics[i], msg, 0)
-                        # if not res.is_published():
-                        #     res.wait_for_publish(3)
 
                         published += 1
                     except Empty:
@@ -121,7 +114,6 @@ def start_data_publisher(pipes: list[multiprocessing.Queue]):
                         sleep(2.95)
                 
                 sleep(0.045)
-
 
                 # update empty slot array with current value (left rotation by 1)
                 empty_slot[0] = empty_slot[1]
