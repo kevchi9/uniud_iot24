@@ -1,6 +1,7 @@
 ## Architecture
 
-![image](https://github.com/kevchi9/uniud_iot24/blob/main/resources/img/iot_project_schema.png)
+![project_schema](https://github.com/kevchi9/uniud_iot24/assets/62105685/f29cf486-125a-453c-92ca-6ae365bf4f9a)
+
 
 ## Raspberry modules
 
@@ -10,7 +11,7 @@
 - `Data Parser`: receives data on 3 pipes mentioned above, parses it, and forwards it on other 3 dedicated pipes to `Data Publisher`.
 - `Data Publisher`: handles the connection to the **MQTT Broker**. Receives separated data on 3 pipes mentioned above, then publishes them on three different MQTT topics.
 
-## Pipes
+### Pipes
 The "pipes" used in the project are actually `multiprocess queues`, used to send and receive messages between processes. They work like a full duplex channels, but in this project are used as unidirectional pipes.
 
 ### MQTT Topics
@@ -25,6 +26,14 @@ The topics are the following (might change in the future):
 
 Logging is managed through the logging library. The used configuration can be found in the `logging.conf` file in the root directory.
 For detailed info about the logging library follow the [official logging documentation](https://docs.python.org/3/library/logging.html).
+
+## VPS modules
+
+![VPS_architecture](https://github.com/kevchi9/uniud_iot24/assets/62105685/748ed722-3eb3-4f98-98c6-924eeeccebf6)
+
+## Grafana Dashboard Example
+
+![grafana](https://github.com/kevchi9/uniud_iot24/assets/62105685/995531de-f6a8-4728-97cd-714f3b955d72)
 
 
 
