@@ -1,73 +1,74 @@
 {
     "state": {
         "rotation": [
-            0.0008663513581268489,
-            0.010888426564633846,
-            0.9642382860183716,
-            0.2648119032382965
+            -0.0026791293639689684,
+            -0.0017824796959757805,
+            -0.19262900948524475,
+            0.9812663793563843
         ],
         "dir": [
-            -0.5107199549674988,
-            0.8595017194747925,
-            -0.02053907699882984
+            0.3780076205730438,
+            -0.9257833957672119,
+            -0.005944530945271254
         ],
         "up": [
-            -0.004075432196259499,
-            0.021371161565184593,
-            0.9997633695602417
+            0.004553080070763826,
+            -0.004414830822497606,
+            0.9999799132347107
         ],
         "front": [
-            -73.1019287109375,
-            41.32154846191406,
-            32.93425369262695
+            -390.2935791015625,
+            222.93275451660156,
+            25.416399002075195
         ],
         "vel": [
-            -15.338615417480469,
-            26.13722801208496,
-            -0.1552465558052063
+            0.00010467216634424403,
+            -4.510025246418081e-05,
+            1.2119598977733403e-06
         ],
         "pos": [
-            -72.09927541017532,
-            40.23820823431015,
-            32.77123280474916
+            -391.12578283130824,
+            224.14938024776256,
+            25.2353619740054
         ]
     },
     "imu": {
-        "gY": -1.3219753889660684,
-        "gZ": -0.08205846825871277,
-        "aZ": -8.993878841732667e-16,
-        "aX": -0.029892244910261493,
-        "aY": 0.020189572544311873,
-        "name": "174292233834",
-        "gX": 0.032091761984633926
+        "aY": 8.738136347155964e-06,
+        "aZ": 4.557872725886172e-16,
+        "gX": 0.12836633218299576,
+        "gY": -0.2639751003861539,
+        "gZ": -0.11449403864545094,
+        "name": "140257321289",
+        "aX": -1.1155339612982633e-05
     },
     "electrics": {
-        "hPatternAxisY": 0.9500000000000001,
-        "hPatternAxisX": 0.6500000000000001,
-        "airspeed": 30.4501960167032,
+        "lowfuel": false,
+        "tcs": 1.0,
+        "airspeed": 9.085930400905363e-05,
         "gearboxMode": "realistic",
-        "esc": 0.0,
+        "esc": 1.0,
+        "hPatternAxisY": 0.0,
+        "hPatternAxisX": 0.0,
         "hasESC": 1.0,
         "hasTCS": 1.0,
-        "dseColor": "3096F1",
-        "accXSmooth": 1.1145956926089022,
-        "accYSmooth": 0.8659584002268721,
-        "accZSmooth": -9.363087567701156,
-        "airflowspeed": 30.472439827798855,
-        "trip": 5580.456150563389,
-        "brakelight_signal_R": 0.0,
+        "dseColor": "AA3939",
+        "accXSmooth": -0.00015229543061635756,
+        "accYSmooth": 0.000799995505328364,
+        "accZSmooth": -9.809611914781678,
+        "steeringUnassisted": -0.08270823529411764,
+        "trip": 9.94067513806011,
         "parkingbrake_input": 0.0,
         "parking": 0.0,
         "hazard": 0.0,
         "hasABS": 1.0,
         "oil": 0.0,
         "disp_R": 0.0,
-        "disp_N": 0.0,
+        "disp_N": 1.0,
         "disp_1": 0.0,
         "disp_2": 0.0,
         "disp_3": 0.0,
         "disp_4": 0.0,
-        "disp_5": 1.0,
+        "disp_5": 0.0,
         "disp_6": 0.0,
         "disp_Pa": 1.0,
         "disp_Ra": 0.0,
@@ -78,50 +79,51 @@
         "disp_N_cvt": 0.0,
         "disp_D_cvt": 0.0,
         "disp_L_cvt": 0.0,
+        "brake": 0.0,
+        "brakelight_signal_R": 0.0,
         "freezeState": false,
-        "engineRunning": 1.0,
+        "reverse": 0.0,
         "brakelight_signal_L": 0.0,
-        "parkingbrake": 0.0,
+        "engineRunning": 1.0,
+        "fuel": 0.9995223252064792,
         "gearModeIndex": 0.0,
-        "steering": 3.3988499999999737,
-        "nop": 0.0,
+        "steering": 42.181199999999954,
+        "lowhighbeam": 0.0,
         "lowpressure": 0.0,
-        "maxrpm": 6500.0,
-        "idlerpm": 950.0,
+        "abs": 0.0,
         "minGearIndex": -1.0,
         "maxGearIndex": 6.0,
-        "gear": 5.0,
-        "steering_input": -0.007203529411764705,
-        "brake": 0.0,
+        "maxrpm": 6500.0,
+        "idlerpm": 950.0,
+        "steering_input": -0.08270823529411764,
+        "gear": 0.0,
         "wheelThermals": {
             "FL": {
-                "brakeCoreTemperature": 241.91201207339697,
-                "brakeSurfaceTemperature": 236.94704042913438,
-                "brakeThermalEfficiency": 1.0
+                "brakeCoreTemperature": 15.088989600988736,
+                "brakeSurfaceTemperature": 15.042612157773801,
+                "brakeThermalEfficiency": 0.9149141640521442
             },
             "RL": {
-                "brakeCoreTemperature": 189.44788913438938,
-                "brakeSurfaceTemperature": 184.96449076930412,
-                "brakeThermalEfficiency": 1.0
+                "brakeCoreTemperature": 15.506767713705699,
+                "brakeSurfaceTemperature": 15.457287536505197,
+                "brakeThermalEfficiency": 0.915577856579742
             },
             "RR": {
-                "brakeCoreTemperature": 189.46226996106284,
-                "brakeSurfaceTemperature": 184.97851328939882,
-                "brakeThermalEfficiency": 1.0
+                "brakeCoreTemperature": 15.69532400516809,
+                "brakeSurfaceTemperature": 15.644568361638362,
+                "brakeThermalEfficiency": 0.9158761853678729
             },
             "FR": {
-                "brakeCoreTemperature": 239.6970937547891,
-                "brakeSurfaceTemperature": 234.79771278257832,
-                "brakeThermalEfficiency": 1.0
+                "brakeCoreTemperature": 16.124261586676095,
+                "brakeSurfaceTemperature": 16.07198738473107,
+                "brakeThermalEfficiency": 0.9165537547612418
             }
         },
-        "fuel": 0.9715196090060383,
         "running": true,
-        "tcs": 0.0,
-        "reverse_wigwag_L": 0.0,
         "clutch_input": 0.0,
         "throttle_input": 0.0,
         "brake_input": 0.0,
+        "reverse_wigwag_L": 0.0,
         "reverse_wigwag_R": 0.0,
         "highbeam_wigwag_L": 0.0,
         "highbeam_wigwag_R": 0.0,
@@ -129,127 +131,62 @@
         "lowhighbeam_signal_R": 0.0,
         "highbeam": 0.0,
         "lowbeam": 0.0,
-        "lowhighbeam": 0.0,
         "ignition": true,
-        "rpm": 3757.2394441049796,
-        "reverse": 0.0,
-        "smoothShiftLogicAV": 396.2193711602875,
-        "clutch": 0.0,
-        "throttle": 0.0,
-        "rpmspin": 205.19050917830248,
+        "rpm": 927.2819211600126,
+        "parkingbrake": 0.0,
+        "smoothShiftLogicAV": 0.0004210205019489186,
+        "clutch": 1.0,
+        "nop": 0.0,
+        "rpmspin": 102.85319465918704,
         "boost": 0.0,
         "boostMax": 0.0,
-        "abs": 0.0,
-        "odometer": 5580.456150563389,
+        "throttle": 0.0,
+        "odometer": 9.94067513806011,
         "lights": 0.0,
         "turnsignal": 0.0,
-        "altitude": 32.7858455941363,
-        "steeringUnassisted": -0.007203529411764705,
-        "wheelspeed": 30.245989103017454,
-        "lowfuel": false,
+        "altitude": 25.23536367042322,
+        "airflowspeed": 2.818283770180256e-05,
+        "wheelspeed": 3.324106122210818e-06,
         "lightbar": 0.0,
         "horn": 0.0,
         "abs_active": 0.0,
-        "avg_wheel_av": 95.73660087585449,
+        "avg_wheel_av": -1.105978481064085e-05,
         "brake_lights": 0.0,
         "check_engine": false,
-        "clutch_ratio": 1.0,
-        "engine_load": 0.0,
+        "clutch_ratio": 0.0,
+        "engine_load": 0.32895979205745096,
         "engine_throttle": 0.0,
         "esc_active": false,
         "exhaust_flow": 1.0,
         "fog_lights": 0.0,
-        "fuel_volume": 48.57598045030191,
+        "fuel_volume": 49.976116260323955,
         "fuel_capacity": 50.0,
         "gear_a": 0.0,
-        "gear_index": 5.0,
-        "gear_m": 5.0,
+        "gear_index": 0.0,
+        "gear_m": 0.0,
         "hazard_signal": false,
         "is_shifting": false,
         "headlights": 0.0,
-        "oil_temperature": 99.07314688008024,
+        "oil_temperature": 82.76727957474144,
         "radiator_fan_spin": 0.0,
-        "rpm_tacho": 3761.7610010440035,
+        "rpm_tacho": 924.7562462904892,
         "signal_l": 0.0,
         "left_signal": false,
         "signal_r": 0.0,
         "right_signal": false,
         "tcs_active": false,
         "throttle_factor": 1.0,
-        "water_temperature": 90.23303700964081
+        "water_temperature": 81.09677572978968
     },
     "damage": {
-        "damage_ext": 0.0,
-        "lowpressure": false,
-        "type": "Damage",
         "deform_group_damage": {
-            "oilpan_damage": {
-                "eventCount": 0.0,
-                "maxEvents": 159.99999999999997,
-                "invMaxEvents": 0.006250000000000001,
-                "damage": 0.0
-            },
-            "mainEngine_intake": {
-                "eventCount": 0.0,
-                "maxEvents": 799.9999999999999,
-                "invMaxEvents": 0.0012500000000000002,
-                "damage": 0.0
-            },
-            "mainEngine": {
-                "eventCount": 0.0,
-                "maxEvents": 4400.0,
-                "invMaxEvents": 0.00022727272727272727,
-                "damage": 0.0
-            },
-            "doorglass_FL_break": {
-                "eventCount": 0.0,
-                "maxEvents": 659.9999999999999,
-                "invMaxEvents": 0.0015151515151515154,
-                "damage": 0.0
-            },
-            "sunroof_break": {
-                "eventCount": 0.0,
-                "maxEvents": 1630.0,
-                "invMaxEvents": 0.0006134969325153375,
-                "damage": 0.0
-            },
-            "doorglass_FR_break": {
-                "eventCount": 0.0,
-                "maxEvents": 659.9999999999999,
-                "invMaxEvents": 0.0015151515151515154,
-                "damage": 0.0
-            },
-            "flashersrear_break": {
-                "eventCount": 0.0,
-                "maxEvents": 459.99999999999994,
-                "invMaxEvents": 0.0021739130434782613,
-                "damage": 0.0
-            },
-            "doorglass_RR_break": {
-                "eventCount": 0.0,
-                "maxEvents": 639.9999999999999,
-                "invMaxEvents": 0.0015625000000000003,
-                "damage": 0.0
-            },
-            "doorglass_RL_break": {
-                "eventCount": 0.0,
-                "maxEvents": 639.9999999999999,
-                "invMaxEvents": 0.0015625000000000003,
-                "damage": 0.0
-            },
-            "mirrorsignal_L_break": {
-                "eventCount": 0.0,
-                "maxEvents": 709.9999999999999,
-                "invMaxEvents": 0.0014084507042253524,
-                "damage": 0.0
-            },
             "taillightglass_R_break": {
                 "eventCount": 0.0,
                 "maxEvents": 474.99999999999994,
                 "invMaxEvents": 0.0021052631578947372,
                 "damage": 0.0
             },
-            "mirrorsignal_R_break": {
+            "mirrorsignal_L_break": {
                 "eventCount": 0.0,
                 "maxEvents": 709.9999999999999,
                 "invMaxEvents": 0.0014084507042253524,
@@ -259,12 +196,6 @@
                 "eventCount": 0.0,
                 "maxEvents": 100.0,
                 "invMaxEvents": 0.01,
-                "damage": 0.0
-            },
-            "mainEngine_accessories": {
-                "eventCount": 0.0,
-                "maxEvents": 1600.0,
-                "invMaxEvents": 0.000625,
                 "damage": 0.0
             },
             "taillightglass_L_break": {
@@ -285,28 +216,16 @@
                 "invMaxEvents": 0.0027777777777777783,
                 "damage": 0.0
             },
-            "foglightglass_R_break": {
-                "eventCount": 0.0,
-                "maxEvents": 999.9999999999999,
-                "invMaxEvents": 0.001,
-                "damage": 0.0
-            },
             "radiator_damage": {
                 "eventCount": 0.0,
                 "maxEvents": 399.99999999999994,
                 "invMaxEvents": 0.0025000000000000005,
                 "damage": 0.0
             },
-            "headlightglass_R_break": {
+            "mainEngine_accessories": {
                 "eventCount": 0.0,
-                "maxEvents": 379.99999999999994,
-                "invMaxEvents": 0.0026315789473684214,
-                "damage": 0.0
-            },
-            "headlightglass_L_break": {
-                "eventCount": 0.0,
-                "maxEvents": 379.99999999999994,
-                "invMaxEvents": 0.0026315789473684214,
+                "maxEvents": 1600.0,
+                "invMaxEvents": 0.000625,
                 "damage": 0.0
             },
             "foglightglass_L_break": {
@@ -315,10 +234,76 @@
                 "invMaxEvents": 0.001,
                 "damage": 0.0
             },
+            "oilpan_damage": {
+                "eventCount": 0.0,
+                "maxEvents": 159.99999999999997,
+                "invMaxEvents": 0.006250000000000001,
+                "damage": 0.0
+            },
             "windshield_break": {
                 "eventCount": 0.0,
                 "maxEvents": 5033.333333333333,
                 "invMaxEvents": 0.00019867549668874172,
+                "damage": 0.0
+            },
+            "mainEngine_intake": {
+                "eventCount": 0.0,
+                "maxEvents": 799.9999999999999,
+                "invMaxEvents": 0.0012500000000000002,
+                "damage": 0.0
+            },
+            "mainEngine": {
+                "eventCount": 0.0,
+                "maxEvents": 4400.0,
+                "invMaxEvents": 0.00022727272727272727,
+                "damage": 0.0
+            },
+            "doorglass_RL_break": {
+                "eventCount": 0.0,
+                "maxEvents": 639.9999999999999,
+                "invMaxEvents": 0.0015625000000000003,
+                "damage": 0.0
+            },
+            "mirrorsignal_R_break": {
+                "eventCount": 0.0,
+                "maxEvents": 709.9999999999999,
+                "invMaxEvents": 0.0014084507042253524,
+                "damage": 0.0
+            },
+            "doorglass_RR_break": {
+                "eventCount": 0.0,
+                "maxEvents": 639.9999999999999,
+                "invMaxEvents": 0.0015625000000000003,
+                "damage": 0.0
+            },
+            "doorglass_FL_break": {
+                "eventCount": 0.0,
+                "maxEvents": 659.9999999999999,
+                "invMaxEvents": 0.0015151515151515154,
+                "damage": 0.0
+            },
+            "sunroof_break": {
+                "eventCount": 0.0,
+                "maxEvents": 1630.0,
+                "invMaxEvents": 0.0006134969325153375,
+                "damage": 0.0
+            },
+            "foglightglass_R_break": {
+                "eventCount": 0.0,
+                "maxEvents": 999.9999999999999,
+                "invMaxEvents": 0.001,
+                "damage": 0.0
+            },
+            "doorglass_FR_break": {
+                "eventCount": 0.0,
+                "maxEvents": 659.9999999999999,
+                "invMaxEvents": 0.0015151515151515154,
+                "damage": 0.0
+            },
+            "headlightglass_L_break": {
+                "eventCount": 0.0,
+                "maxEvents": 379.99999999999994,
+                "invMaxEvents": 0.0026315789473684214,
                 "damage": 0.0
             },
             "backlight_break": {
@@ -326,15 +311,27 @@
                 "maxEvents": 666.6666666666666,
                 "invMaxEvents": 0.0015,
                 "damage": 0.0
+            },
+            "headlightglass_R_break": {
+                "eventCount": 0.0,
+                "maxEvents": 379.99999999999994,
+                "invMaxEvents": 0.0026315789473684214,
+                "damage": 0.0
+            },
+            "flashersrear_break": {
+                "eventCount": 0.0,
+                "maxEvents": 459.99999999999994,
+                "invMaxEvents": 0.0021739130434782613,
+                "damage": 0.0
             }
         },
         "part_damage": [],
-        "damage": 0.0
+        "lowpressure": false,
+        "type": "Damage",
+        "damage": 0.0,
+        "damage_ext": 0.0
     },
     "timer": {
-        "time": 227.93576082214713
-    },
-    "newlap": false,
-    "outlap": false,
-    "inlap": false
+        "time": 55.19525145366788
+    }
 }

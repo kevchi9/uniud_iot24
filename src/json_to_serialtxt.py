@@ -56,13 +56,9 @@ def metriGPS (x, y):
 
 if __name__ == '__main__':
 
-    data_batch = {}
     path = 'source_data/pickles/'
-    for filename in os.listdir(path):
-        with open(path + filename, 'rb') as logfile:
-            data_batch = data_batch | pickle.load(logfile)
-
-
+    with open(path + 'telemetry.pickle', 'rb') as logfile:
+        data_batch = pickle.load(logfile)
 
     with open('source_data/reference.json', 'w') as f:
         json.dump(next(iter(data_batch.values())), f, indent = 4)
