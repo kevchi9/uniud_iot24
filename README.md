@@ -1,7 +1,12 @@
+This software (still unnamed) is part of an IoT project for the university's IoT course.
+The software is used (in our case on a Raspberry) to retrieve data from the central unit of a vehicle, a GPS and a gyroscope, parse the data, and send them to a cloud MQTT broker.
+The MQTT broker then sends the data through telegraf to influxDB (which is running on the same server).
+On the same server Grafana is running and will query the DB to get and plot the data. A dashboard example is shown below.
+The rest of the project (cloud server with MQTT broker and TIG stack) has nothing to do with this repository since it should be implemented by anyone who wants to deploy this.
+
 ## Architecture
 
 ![project_schema](https://github.com/kevchi9/uniud_iot24/assets/62105685/f29cf486-125a-453c-92ca-6ae365bf4f9a)
-
 
 ## Raspberry modules
 
@@ -34,6 +39,3 @@ For detailed info about the logging library follow the [official logging documen
 ## Grafana Dashboard Example
 
 ![grafana](https://github.com/kevchi9/uniud_iot24/assets/62105685/995531de-f6a8-4728-97cd-714f3b955d72)
-
-
-
